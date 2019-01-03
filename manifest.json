@@ -10,7 +10,7 @@
 	  "persistent": false,
 	  "scripts": ["background.js"]
 	},
-	permissions: [
+	"permissions": [
 		"storage"
 	]
 }
