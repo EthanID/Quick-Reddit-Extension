@@ -1,4 +1,4 @@
-chrome.storage.sync.set({"recentSubs": ["animalz"]}, function() {});
+chrome.storage.sync.set({"recentSubs": ["animalz"]}, function() {}); // instantiate cloud-stored objects
 chrome.storage.sync.set({"favSubs": []}, function() {});
 
 chrome.omnibox.onInputEntered.addListener(
@@ -6,24 +6,23 @@ chrome.omnibox.onInputEntered.addListener(
 		chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub});
 
 		chrome.storage.sync.get("recentSubs", function test(localRecentSubs) {
-		  chrome.storage.sync.set({"recentSubs": localRecentSubs + sub}, function() {});
-	  });
+	    chrome.storage.sync.set({"recentSubs": localRecentSubs + sub}, function() {});
 	});
+});
 
 chrome.omnibox.onInputChanged.addListener(
-  function(text, suggestions) {
+  function(userSearch, suggestions) {
 	  var subs = ["mechanicalkeyboards", "nsfw", "nsfw_gifs", "buildapcsales"];
-	  var subs = [];
 	  var seuggestedSubs = [];
 
-	  chrome.storage.sync.get("recentSubs", function test(localRecentSubs) {
-		  subs = input.recentSubs;
-	  });
+//	  chrome.storage.sync.get("recentSubs", function test(localRecentSubs) {
+//		  subs = localRecentSubs.recentSubs;
+//	  });
 
 	  for(var sub of subs) {
 		  var isMatch = true;
-		  for(var letterNum in text) {
-			  if(text[letterNum] !== sub[letterNum]) {
+		  for(var letterNum in userSearch) {
+			  if(userSearch[letterNum] !== sub[letterNum]) {
 				  isMatch = false;
 			  }
 		  }
