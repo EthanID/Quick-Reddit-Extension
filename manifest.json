@@ -1,11 +1,15 @@
 {
 	"manifest_version": 2,
  	"name": "Quick Reddit Extension",
-	"version": "1.0",
-	"omnibox": { "keyword" : "r/" },
+	"description": "Allows for faster Reddit navigation. Simply type r/ [space] [subreddit name] to enter the sub.",
+	"author": "Ethan Coe",
+	"version": "2.0",
 	"icons": {
-	  "16": "icon.png"
+	  "16": "icon16.png",
+	  "48": "icon48.png",
+	  "128": "icon128.png"
 	},
+	"omnibox": { "keyword" : "r/" },
 	"background": {
 	  "persistent": false,
 	  "scripts": ["background.js"]
