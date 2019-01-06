@@ -7,9 +7,10 @@ chrome.omnibox.onInputEntered.addListener(
 		chrome.storage.sync.get("recentSubs", function(localRecentSubs) {
 			if(sub !== "") {
 				chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub});
-				localRecentSubs.recentSubs.push(sub);
+				var arrayRecentSub = localRecentSubs.recentSubs
+				arrayRecentSub.push(sub);
 				console.log(arrayRecentSub);
-				chrome.storage.sync.set({"recentSubs": localRecentSubs.recentSubs});
+				chrome.storage.sync.set({"recentSubs": arrayRecentSub});
 			}
 			else {
 				chrome.tabs.update({"url": "https://www.reddit.com"});
