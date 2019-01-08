@@ -6,50 +6,11 @@ chrome.omnibox.onInputEntered.addListener(
 
 		chrome.storage.sync.get("recentSubs", function(localRecentSubs) {
 			var dummyUser = "shittymorph";
+			var shortcuts = {"s": "/saved", "saved": "/saved", "c": "/comments", "comments": "/comments", "su": "/submitted", "g": "/gilded", "gilded": "/gilded", "u": "/upvoted", "d": "/downvoted"};
 
-			if(sub === "s" || sub === "saved") {
+			if(shortcuts[sub] !== undefined) {
 				if(dummyUser !== "") {
-					chrome.tabs.update({"url": "https://www.reddit.com/user/" + dummyUser + "/saved")});
-				}
-				else {
-					// throw no-user error
-				}
-			}
-			else if(sub === "c" || sub === "comments") {
-				if(dummyUser !== "") {
-					chrome.tabs.update({"url": "https://www.reddit.com/user/" + dummyUser + "/comments"});
-				}
-				else {
-					// throw no-user error
-				}
-			}
-			else if(sub === "su" || sub === "submitted") {
-				if(dummyUser !== "") {
-					chrome.tabs.update({"url": "https://www.reddit.com/user/" + dummyUser + "/submitted"});
-				}
-				else {
-					// throw no-user error
-				}
-			}
-			else if(sub === "g" || sub === "gilded") {
-				if(dummyUser !== "") {
-					chrome.tabs.update({"url": "https://www.reddit.com/user/" + dummyUser + "/comments"});
-				}
-				else {
-					// throw no-user error
-				}
-			}
-			else if(sub === "u" || sub === "upvoted") {
-				if(dummyUser !== "") {
-					chrome.tabs.update({"url": "https://www.reddit.com/user/" + dummyUser + "/upvoted"});
-				}
-				else {
-					// throw no-user error
-				}
-			}
-			else if(sub === "d" || sub === "downvoted") {
-				if(dummyUser !== "") {
-					chrome.tabs.update({"url": "https://www.reddit.com/user/" + dummyUser + "/downvoted"});
+					chrome.tabs.update({"url": "https://www.reddit.com/user/" + dummyUser + shortcuts[sub]});
 				}
 				else {
 					// throw no-user error
