@@ -1,0 +1,13 @@
+* {
+	font-family: "Arial";
+	color: rgb(43, 43, 43);
+}
+
+div, .margins {
+	margin: 10px;
+}
+
+.heading {
+	color: rgb(245, 10, 10);
+	font-weight: bold;
+}

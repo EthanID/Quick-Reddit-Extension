@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<link rel="stylesheet" type="text/css" href="settings.css">
+	</head>
+	<body>
+		<h2><b class="margins">Options</b></h2>
+		<div>
+			<span class="heading">Favorite Subs</span><br>
+			<input id="favsub"> <button id="favsubsadd">+</button><br>
+			<span id="favsubslist">
+			r/doglikesparky <button class="favsubsdel" id="favsubsdel1">-</button>
+			</span>
+		</div>
+		<div>
+			<span class="heading">History</span><br>
+			Keep sub history: <input id="keephistory" type="checkbox"><br>
+			Clear sub history: <input id="clearhistory" type="checkbox"><br>
+		</div>
+		<div>
+			<span class="heading">NSFW</span><br>
+			Show NSFW suggestions: <input id="nsfwsuggest" type="checkbox"><br>
+			Show NSFW subs: <input id="nsfwblock" type="checkbox"><br>
+		</div>
+		<button id="save" class="margins">Save Settings</button>
+	</body>
+
+	<script src="jquery-3.3.1.slim.js"></script>
+	<script src="settings.js"></script>
+</html>
