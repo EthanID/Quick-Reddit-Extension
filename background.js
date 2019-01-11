@@ -3,9 +3,15 @@ chrome.storage.sync.set({"favSubs": ["mechanicalkeyboards", "mechmarket", "askre
 chrome.storage.sync.set({"shortcuts": {"s": "/saved", "saved": "/saved", "c": "/comments", "comments": "/comments", "su": "/submitted", "g": "/gilded", "gilded": "/gilded", "u": "/upvoted", "d": "/downvoted"}}, function() {});
 chrome.storage.sync.set({"user": "shittymorphbrother"}, function() {});
 
+var showNSFW = false;
+if(!showNSFW) {
+	// load nsfw file
+}
+
+
 chrome.omnibox.onInputEntered.addListener(
 	(sub) => {
-
+		
 		chrome.storage.sync.get("recentSubs", function(localRecentSubs) {
 			chrome.storage.sync.get("shortcuts", function(localShortcuts) {
 				chrome.storage.sync.get("user", function(localUser) {
@@ -21,11 +27,12 @@ chrome.omnibox.onInputEntered.addListener(
 						}
 					}
 					else {
-						chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub});
-						var arrayRecentSub = localRecentSubs.recentSubs
-						arrayRecentSub.push(sub);
-						console.log(arrayRecentSub);
-						chrome.storage.sync.set({"recentSubs": arrayRecentSub});
+						if(checkSFW(sub) || showNSFW) {
+							chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub});
+							var arrayRecentSub = localRecentSubs.recentSubs
+							arrayRecentSub.push(sub);
+							chrome.storage.sync.set({"recentSubs": arrayRecentSub});
+						}
 					}
 				});
 			});
@@ -62,3 +69,8 @@ chrome.omnibox.onInputChanged.addListener(
 	  });
 
 	});
+
+function checkSFW(sub) {
+	// check if sfw from nsfw array
+	return true;
+}
