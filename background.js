@@ -37,7 +37,7 @@ chrome.omnibox.onInputEntered.addListener(
 							chrome.storage.sync.set({"recentSubs": arrayRecentSub});
 						}
 						else {
-							chrome.tabs.update({"url": "block.html"});
+							chrome.tabs.update({"url": "nsfw_page.html"});
 						}
 					}
 				});
