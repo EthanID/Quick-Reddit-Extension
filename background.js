@@ -2,10 +2,13 @@ chrome.storage.sync.set({"recentSubs": []}, function() {}); // instantiate cloud
 chrome.storage.sync.set({"favSubs": ["mechanicalkeyboards", "mechmarket", "askreddit", "nsfw", "nsfw_gifs"]}, function() {});
 chrome.storage.sync.set({"shortcuts": {"s": "/saved", "saved": "/saved", "c": "/comments", "comments": "/comments", "su": "/submitted", "g": "/gilded", "gilded": "/gilded", "u": "/upvoted", "d": "/downvoted"}}, function() {});
 chrome.storage.sync.set({"user": "shittymorphbrother"}, function() {});
-
 var showNSFW = false;
-if(!showNSFW) {
-	// load nsfw file
+
+var subsNSFW = [];
+if(!showNSFW) { // load nsfw subs file if needed
+	fetch("nsfw_subs.json")
+			.then(response => response.json())
+			.then(jsonResponse => subsNSFW = jsonResponse)
 }
 
 
@@ -33,11 +36,14 @@ chrome.omnibox.onInputEntered.addListener(
 							arrayRecentSub.push(sub);
 							chrome.storage.sync.set({"recentSubs": arrayRecentSub});
 						}
+						else {
+							chrome.tabs.update({"url": "block.html"});
+						}
 					}
 				});
 			});
 		});
-
+		
 });
 
 chrome.omnibox.onInputChanged.addListener(
@@ -71,6 +77,6 @@ chrome.omnibox.onInputChanged.addListener(
 	});
 
 function checkSFW(sub) {
-	// check if sfw from nsfw array
-	return true;
+	return !subsNSFW.includes(sub);
 }
+

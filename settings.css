@@ -11,3 +11,11 @@ div, .margins {
 	color: rgb(245, 10, 10);
 	font-weight: bold;
 }
+
+.red {
+	color: rgb(245, 10, 10);
+}
+
+.center {
+	text-align: center;
+}

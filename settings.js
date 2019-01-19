@@ -1,23 +1,19 @@
-var favsubs = [];
-
 function displayFavSubs() {
 	$("#favsubslist").html("");
 	for(sub of favsubs) {
-		if(/^[a-zA-Z]+$/.test(sub)) {
-			sub = sub.toLowerCase();
-			if(!sub.startsWith("r/")) {
-				sub = "r/" + sub;
-			}
-			$("#favsubslist").append(sub);
+		sub = sub.toLowerCase();
+		if(!sub.startsWith("r/")) {
+			sub = "r/" + sub;
 		}
-		else {
-			alert(sub + " is not a valid sub");
-		}
+		sub += "<br>"
+
+		$("#favsubslist").append(sub);
 	}
 }
 
 $("#favsubsadd").click(function() {
-	favsubs.push($("#favsub").val());
+	$("#favsub").val()
+	
 	displayFavSubs();
 });
 
