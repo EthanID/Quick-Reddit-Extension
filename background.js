@@ -53,7 +53,7 @@ chrome.omnibox.onInputChanged.addListener(
 		  chrome.storage.sync.get("favSubs", function(localFavSubs) {
 			  
 			  var subs = localRecentSubs.recentSubs.concat(localFavSubs.favSubs);
-			  var seuggestedSubs = [];
+			  var suggestedSubs = [];
 
 			  for(var sub of subs) {
 				  var isMatch = true;
@@ -66,11 +66,11 @@ chrome.omnibox.onInputChanged.addListener(
 					  var subObject = new Object();
 					  subObject.content = sub;
 					  subObject.description = sub;
-					  seuggestedSubs.push(subObject);
+					  suggestedSubs.push(subObject);
 				  }
 			  }
 
-			  suggestions(seuggestedSubs);
+			  suggestions(suggestedSubs);
 		  });
 	  });
 
