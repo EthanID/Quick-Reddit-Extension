@@ -11,6 +11,9 @@ if(!showNSFW) { // load nsfw subs file if needed
 			.then(jsonResponse => subsNSFW = jsonResponse)
 }
 
+function checkSFW(sub) {
+	return !subsNSFW.includes(sub);
+}
 
 chrome.omnibox.onInputEntered.addListener( // go to sub when entered
 	(sub) => {
@@ -77,8 +80,3 @@ chrome.omnibox.onInputChanged.addListener( // generate and display suggestions
 	  });
 
 	});
-
-function checkSFW(sub) {
-	return !subsNSFW.includes(sub);
-}
-
