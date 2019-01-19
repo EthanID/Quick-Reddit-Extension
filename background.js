@@ -12,12 +12,13 @@ if(!showNSFW) { // load nsfw subs file if needed
 }
 
 
-chrome.omnibox.onInputEntered.addListener(
+chrome.omnibox.onInputEntered.addListener( // go to sub when entered
 	(sub) => {
 		
 		chrome.storage.sync.get("recentSubs", function(localRecentSubs) {
 			chrome.storage.sync.get("shortcuts", function(localShortcuts) {
 				chrome.storage.sync.get("user", function(localUser) {
+					
 					var shortcuts = localShortcuts.shortcuts;
 					var user = localUser.user;
 					
@@ -46,7 +47,7 @@ chrome.omnibox.onInputEntered.addListener(
 		
 });
 
-chrome.omnibox.onInputChanged.addListener(
+chrome.omnibox.onInputChanged.addListener( // generate and display suggestions
   (userSearch, suggestions) => {
 
 	  chrome.storage.sync.get("recentSubs", function(localRecentSubs) {
@@ -57,6 +58,7 @@ chrome.omnibox.onInputChanged.addListener(
 
 			  for(var sub of subs) {
 				  var isMatch = true;
+				  
 				  for(var letterNum in userSearch) {
 					  if(userSearch[letterNum] !== sub[letterNum]) {
 						  isMatch = false;
