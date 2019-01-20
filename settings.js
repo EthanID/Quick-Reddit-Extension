@@ -1,3 +1,4 @@
+/*
 function displayFavSubs() {
 	$("#favsubslist").html("");
 	for(sub of favsubs) {
@@ -10,19 +11,25 @@ function displayFavSubs() {
 		$("#favsubslist").append(sub);
 	}
 }
+*/
 
 $("#favsubsadd").click(function() {
 	$("#favsub").val()
-	
-	displayFavSubs();
+//	displayFavSubs();
 });
 
 $(".favsubsdel").click(function() {
 
 });
 
+$("clearhistory").click(function() {
+	chrome.storage.sync.set({"recentSubs": []}, function () {});
+})
+
 $("#save").click(function() {
-	// Save function
+	var keepSubs = $("#keephistory").prop("checked");
+	
+	chrome.storage.sync.set({"keepSubs": keepSubs}, function() {});
 });
 
-displayFavSubs();
+//displayFavSubs();

@@ -1,6 +1,7 @@
 chrome.storage.sync.set({"recentSubs": []}, function() {}); // instantiate cloud-stored objects
 chrome.storage.sync.set({"favSubs": ["mechanicalkeyboards", "mechmarket", "askreddit", "nsfw", "nsfw_gifs"]}, function() {});
 chrome.storage.sync.set({"shortcuts": {"s": "/saved", "saved": "/saved", "c": "/comments", "comments": "/comments", "su": "/submitted", "g": "/gilded", "gilded": "/gilded", "u": "/upvoted", "d": "/downvoted"}}, function() {});
+chrome.storage.sync.set({"userShortcuts": {"s": "/saved", "saved": "/saved", "c": "/comments", "comments": "/comments", "su": "/submitted", "g": "/gilded", "gilded": "/gilded", "u": "/upvoted", "d": "/downvoted"}}, function() {});
 chrome.storage.sync.set({"user": "shittymorphbrother"}, function() {});
 var showNSFW = false;
 
@@ -21,29 +22,34 @@ chrome.omnibox.onInputEntered.addListener( // go to sub when entered
 		chrome.storage.sync.get("recentSubs", function(localRecentSubs) {
 			chrome.storage.sync.get("shortcuts", function(localShortcuts) {
 				chrome.storage.sync.get("user", function(localUser) {
-					
-					var shortcuts = localShortcuts.shortcuts;
-					var user = localUser.user;
-					
-					if(shortcuts[sub] !== undefined) {
-						if(user !== "") {
-							chrome.tabs.update({"url": "https://www.reddit.com/user/" + user + shortcuts[sub]});
+					chrome.storage.sync.get("keepSubs", function(localKeepSubs) {
+						
+						var shortcuts = localShortcuts.shortcuts;
+						var user = localUser.user;
+						var keepSubs = localKeepSubs.keepSubs// || true;
+						
+						if(shortcuts[sub] !== undefined) { // "sub" is a shortcut
+							if(user !== "" || user !== undefined) {
+								chrome.tabs.update({"url": "https://www.reddit.com/user/" + user + shortcuts[sub]});
+							}
+							else {
+								// throw no-user error
+							}
 						}
 						else {
-							// throw no-user error
+							if(checkSFW(sub) || showNSFW) {
+								chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub});
+								if(keepSubs) {
+									var arrayRecentSub = localRecentSubs.recentSubs
+									arrayRecentSub.push(sub);
+									chrome.storage.sync.set({"recentSubs": arrayRecentSub});
+								}
+							}
+							else {
+								chrome.tabs.update({"url": "nsfw_page.html"});
+							}
 						}
-					}
-					else {
-						if(checkSFW(sub) || showNSFW) {
-							chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub});
-							var arrayRecentSub = localRecentSubs.recentSubs
-							arrayRecentSub.push(sub);
-							chrome.storage.sync.set({"recentSubs": arrayRecentSub});
-						}
-						else {
-							chrome.tabs.update({"url": "nsfw_page.html"});
-						}
-					}
+					});
 				});
 			});
 		});
