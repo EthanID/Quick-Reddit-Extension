@@ -1,35 +1,38 @@
-/*
-function displayFavSubs() {
-	$("#favsubslist").html("");
-	for(sub of favsubs) {
-		sub = sub.toLowerCase();
-		if(!sub.startsWith("r/")) {
-			sub = "r/" + sub;
-		}
-		sub += "<br>"
+function displaySettings() {
+	chrome.storage.sync.get("keepSubs", function(localKeepSubs) {
+		chrome.storage.sync.get("suggestNSFW", function(localSuggestNSFW) {
+			chrome.storage.sync.get("showNSFW", function(localShowNSFW) {
+				chrome.storage.sync.get("user", function(localUser) {
+					var keepSubs = localKeepSubs.keepSubs;
+					var suggestNSFW = localSuggestNSFW.suggestNSFW;
+					var showNSFW = localShowNSFW.showNSFW;
+					var user = localUser.user;
 
-		$("#favsubslist").append(sub);
-	}
+					$("#keepHistory").prop("checked", keepSubs);
+					$("#nsfwsuggest").prop("checked", suggestNSFW);
+					$("#nsfwshow").prop("checked", showNSFW);
+					$("#user").val(user);
+					// call display subs and display shortcuts
+				});
+			});
+		});
+	});
 }
-*/
 
-$("#favsubsadd").click(function() {
-	$("#favsub").val()
-//	displayFavSubs();
-});
-
-$(".favsubsdel").click(function() {
-
-});
-
-$("clearhistory").click(function() {
+$("#clearhistory").click(function() {
 	chrome.storage.sync.set({"recentSubs": []}, function () {});
 })
 
 $("#save").click(function() {
 	var keepSubs = $("#keephistory").prop("checked");
+	var suggestNSFW = $("#nsfwsuggest").prop("checked");
+	var showNSFW = $("#nsfwshow").prop("checked");
+	var user = $("#user").val();
 	
 	chrome.storage.sync.set({"keepSubs": keepSubs}, function() {});
+	chrome.storage.sync.set({"suggestNSFW": suggestNSFW}, function() {});
+	chrome.storage.sync.set({"showNSFW": showNSFW}, function() {});
+	chrome.storage.sync.set({"user": user}, function() {});
 });
 
-//displayFavSubs();
+displaySettings();
