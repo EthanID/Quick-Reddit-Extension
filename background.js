@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener(function() {
 	chrome.storage.sync.set({"keepSubs": true}, function() {});
 	chrome.storage.sync.set({"suggestNSFW": true}, function() {});
 	chrome.storage.sync.set({"showNSFW": true}, function() {});
-	chrome.storage.sync.set({"user": "bigman"}, function() {});
+	chrome.storage.sync.set({"user": ""}, function() {});
 });
 
 var subsNSFW = [];
