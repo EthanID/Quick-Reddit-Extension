@@ -99,7 +99,7 @@ chrome.omnibox.onInputChanged.addListener( // generate and display suggestions
 				  var suggestNSFW = localSuggestNSFW.suggestNSFW;
 
 				  for(var sub of subs) {
-					  if(suggestNSFW || suggestNSFW === undefined || checkSFW(sub)) {
+					  if(suggestNSFW || checkSFW(sub)) {
 						  var isMatch = true;
 
 						  for(var letterNum in userSearch) { // runs to end of userSearch to check for matches with sub

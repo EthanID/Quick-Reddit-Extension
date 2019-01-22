@@ -42,8 +42,7 @@ $("#favsubsadd").click(function() {
 });
 
 $("#favsubslist").on("click", ".favsubdel", function() {
-	// delete this element and remove from global arrya
-	console.log("u gay");
+	// delete this element and remove from global array
 })
 
 
