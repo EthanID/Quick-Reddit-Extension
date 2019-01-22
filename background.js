@@ -1,13 +1,16 @@
 chrome.runtime.onInstalled.addListener(function() {
-	chrome.storage.sync.set({"recentSubs": []}, function() {}); // instantiate cloud-stored objects
+	chrome.storage.sync.set({"recentSubs": []}, function() {}); // instantiate cloud-stored objects at defaults
 	chrome.storage.sync.set({"favSubs": []}, function() {});
 	chrome.storage.sync.set({"shortcuts": {}}, function() {});
 	chrome.storage.sync.set({"userShortcuts": {"s": "/saved", "saved": "/saved", "c": "/comments", "comments": "/comments", "su": "/submitted", "g": "/gilded", "gilded": "/gilded", "u": "/upvoted", "d": "/downvoted"}}, function() {});
+	chrome.storage.sync.set({"keepSubs": true}, function() {});
+	chrome.storage.sync.set({"suggestNSFW": true}, function() {});
+	chrome.storage.sync.set({"showNSFW": true}, function() {});
+	chrome.storage.sync.set({"user": "bigman"}, function() {});
 });
 
 var subsNSFW = [];
-chrome.storage.sync.get("showNSFW", function(localShowNSFW) {
-	console.log("showNSFW is" + localShowNSFW.showNSFW); // load nsfw file
+chrome.storage.sync.get("showNSFW", function(localShowNSFW) { // load nsfw file
 	fetch("nsfw_subs.json")
 			.then(response => response.json())
 			.then(jsonResponse => subsNSFW = jsonResponse)
@@ -22,52 +25,60 @@ chrome.omnibox.onInputEntered.addListener( // go to sub when entered
 		
 		chrome.storage.sync.get("recentSubs", function(localRecentSubs) {
 			chrome.storage.sync.get("userShortcuts", function(localUserShortcuts) {
-				chrome.storage.sync.get("user", function(localUser) {
-					chrome.storage.sync.get("keepSubs", function(localKeepSubs) {
-						chrome.storage.sync.get("showNSFW", function(localShowNSFW) {
-						
-							var userShortcuts = localUserShortcuts.userShortcuts;
-							var user = localUser.user;
-							var keepSubs = localKeepSubs.keepSubs;
-							var showNSFW = localShowNSFW.showNSFW;
-							var search = ""
-							if(sub.split(" ").length > 1) {
-								search = sub.split(" ").slice(1).toString().replace(",", " ");
-								console.log(search);
-								sub = sub.split(" ")[0];
-							}
+				chrome.storage.sync.get("shortcuts", function(localShortcuts) {
+					chrome.storage.sync.get("user", function(localUser) {
+						chrome.storage.sync.get("keepSubs", function(localKeepSubs) {
+							chrome.storage.sync.get("showNSFW", function(localShowNSFW) {
 
-							if(userShortcuts[sub] !== undefined) { // "sub" is user shortcut
-								if(user !== "" && user !== undefined) {
-									chrome.tabs.update({"url": "https://www.reddit.com/user/" + user + userShortcuts[sub]});
+								var userShortcuts = localUserShortcuts.userShortcuts;
+								var shortcuts = localShortcuts.shortcuts;
+								var user = localUser.user;
+								var keepSubs = localKeepSubs.keepSubs;
+								var showNSFW = localShowNSFW.showNSFW;
+								var search = ""
+
+								if(sub.split(" ").length > 1) {
+									search = sub.split(" ").slice(1).toString().replace(",", " ");
+									console.log(search);
+									sub = sub.split(" ")[0];
 								}
-								else {
-									alert("No username found in your options. Please add a username in your options to use user shortcuts.");
+
+
+								if(shortcuts[sub] !== undefined) { // "sub" is shortcut
+									chrome.tabs.update({"url": "https://www.reddit.com/user/" + shortcuts[sub]});
 								}
-							}
-							else { // "sub" is a sub
-								if(checkSFW(sub) || showNSFW || showNSFW === undefined) {
-									if(sub !== "") {
-										if(search === "") {
-											chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub});
+								else if(userShortcuts[sub] !== undefined) { // "sub" is user shortcut
+									if(user !== "" && user !== undefined) {
+										chrome.tabs.update({"url": "https://www.reddit.com/user/" + user + userShortcuts[sub]});
+									}
+									else {
+										alert("No username found in your options. Please add a username in your options to use user shortcuts.");
+									}
+								}
+								else { // "sub" is a sub
+									if(checkSFW(sub) || showNSFW || showNSFW === undefined) {
+										if(sub !== "") {
+											if(search === "") {
+												chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub});
+											}
+											else {
+												chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub + "/search?q=" + search.replace(" ", "+") + "&restrict_sr=on&include_over_18=on&sort=relevance&t=all"});
+											}
+											if(keepSubs) {
+												var arrayRecentSub = localRecentSubs.recentSubs
+												arrayRecentSub.push(sub);
+												chrome.storage.sync.set({"recentSubs": arrayRecentSub});
+											}
 										}
 										else {
-											chrome.tabs.update({"url": "https://www.reddit.com/r/" + sub + "/search?q=" + search.replace(" ", "+") + "&restrict_sr=on&include_over_18=on&sort=relevance&t=all"});
-										}
-										if(keepSubs) {
-											var arrayRecentSub = localRecentSubs.recentSubs
-											arrayRecentSub.push(sub);
-											chrome.storage.sync.set({"recentSubs": arrayRecentSub});
+											chrome.tabs.update({"url": "https://www.reddit.com"});
 										}
 									}
 									else {
-										chrome.tabs.update({"url": "https://www.reddit.com"});
+										chrome.tabs.update({"url": "nsfw_page.html"});
 									}
 								}
-								else {
-									chrome.tabs.update({"url": "nsfw_page.html"});
-								}
-							}
+							});
 						});
 					});
 				});
