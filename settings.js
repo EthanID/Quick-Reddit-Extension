@@ -7,6 +7,7 @@ function displaySettings() {
 		chrome.storage.sync.get("suggestNSFW", function(localSuggestNSFW) {
 			chrome.storage.sync.get("showNSFW", function(localShowNSFW) {
 				chrome.storage.sync.get("user", function(localUser) {
+					
 					var keepSubs = localKeepSubs.keepSubs;
 					var suggestNSFW = localSuggestNSFW.suggestNSFW;
 					var showNSFW = localShowNSFW.showNSFW;
@@ -16,8 +17,6 @@ function displaySettings() {
 					$("#nsfwsuggest").prop("checked", suggestNSFW);
 					$("#nsfwshow").prop("checked", showNSFW);
 					$("#user").val(user);
-					
-					displayFavSubs();
 				});
 			});
 		});
